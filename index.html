@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💐 Feliz Día de las Madres — Familia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   VARIABLES & RESET
+   ============================================================ */
+:root{
+  --bg:#fff8fb; --bg2:#ffeef5;
+  --rose-pale:#ffd6e8; --rose:#f4a0be;
+  --rose-mid:#e0789a; --rose-deep:#c05075;
+  --rose-dark:#8b3058; --wine:#5a1a38;
+  --cream:#fdf6ef; --gold:#c9843a;
+  --txt:#5a1a38; --txt-soft:#9a5070;
+  --white:#fff; --shadow-r:rgba(192,80,117,.15);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);font-family:'Lora',Georgia,serif;color:var(--txt);overflow-x:hidden;}
+
+/* ============================================================
+   PETALS
+   ============================================================ */
+#petals-canvas{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.petal{position:absolute;top:-30px;font-size:1rem;user-select:none;animation:petalFall linear infinite;opacity:0;}
+@keyframes petalFall{
+  0%{transform:translateY(0) rotate(0deg) translateX(0);opacity:0;}
+  5%{opacity:.8;} 95%{opacity:.5;}
+  100%{transform:translateY(105vh) rotate(540deg) translateX(40px);opacity:0;}
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  padding:3rem 2rem;position:relative;overflow:hidden;
+  background:
+    radial-gradient(ellipse 70% 60% at 20% 10%,#ffd6e8cc,transparent),
+    radial-gradient(ellipse 60% 50% at 80% 90%,#ffc5dac0,transparent),
+    radial-gradient(ellipse 80% 80% at 50% 50%,#fff0f6,#fde8f2);
+}
+.hero-corner{position:absolute;font-size:clamp(4rem,10vw,9rem);opacity:.12;pointer-events:none;line-height:1;animation:breathe 4s ease-in-out infinite;}
+.hero-corner.tl{top:-1rem;left:-1rem;}
+.hero-corner.tr{top:-1rem;right:-1rem;}
+.hero-corner.bl{bottom:-1rem;left:-1rem;}
+.hero-corner.br{bottom:-1rem;right:-1rem;}
+@keyframes breathe{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
+.hero-ribbon{background:rgba(255,255,255,.7);backdrop-filter:blur(12px);border:1.5px solid rgba(244,160,190,.4);border-radius:50px;padding:.45rem 1.6rem;font-size:.82rem;letter-spacing:.2em;text-transform:uppercase;color:var(--rose-deep);margin-bottom:1.6rem;opacity:0;animation:slideDown .9s ease .1s forwards;}
+.hero-title{font-family:'Dancing Script',cursive;font-size:clamp(3.5rem,12vw,8rem);font-weight:700;color:var(--rose-dark);line-height:1.05;text-shadow:3px 4px 20px rgba(138,48,88,.18);opacity:0;animation:slideUp 1s ease .35s forwards;margin-bottom:.6rem;}
+.hero-sub{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(1rem,2.8vw,1.45rem);color:var(--txt-soft);max-width:560px;line-height:1.7;opacity:0;animation:slideUp 1s ease .6s forwards;margin-bottom:2.5rem;}
+.hero-emojis{font-size:1.8rem;letter-spacing:.3rem;opacity:0;animation:slideUp 1s ease .85s forwards,floatBob 3s ease-in-out 1.85s infinite;}
+@keyframes floatBob{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.scroll-hint{position:absolute;bottom:2.2rem;color:var(--rose);font-size:1.5rem;opacity:0;animation:slideUp 1s ease 1.3s forwards,bounce 2s ease-in-out 2.3s infinite;cursor:pointer;border:none;background:none;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(9px);}}
+@keyframes slideUp{from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:translateY(0);}}
+@keyframes slideDown{from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:translateY(0);}}
+
+/* ============================================================
+   SHARED
+   ============================================================ */
+.container{max-width:1300px;margin:0 auto;padding:0 1.5rem;}
+.sec-head{text-align:center;margin-bottom:3rem;}
+.sec-title{font-family:'Dancing Script',cursive;font-size:clamp(2.2rem,5vw,3.8rem);color:var(--rose-dark);margin-bottom:.3rem;}
+.sec-rule{display:flex;align-items:center;justify-content:center;gap:1rem;color:var(--rose-mid);}
+.sec-rule::before,.sec-rule::after{content:'';height:1.5px;width:70px;background:linear-gradient(90deg,transparent,var(--rose-mid));}
+.sec-rule::after{background:linear-gradient(90deg,var(--rose-mid),transparent);}
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .75s ease,transform .75s ease;}
+.reveal.shown{opacity:1;transform:translateY(0);}
+.d1{transition-delay:.1s;}.d2{transition-delay:.2s;}.d3{transition-delay:.3s;}
+.d4{transition-delay:.4s;}.d5{transition-delay:.5s;}
+
+/* ============================================================
+   GALLERY  (20 FOTOS)
+   ============================================================ */
+.gallery-wrap{padding:5rem 0;background:linear-gradient(180deg,var(--bg) 0%,#fde0ed 30%,#ffe8f2 70%,var(--bg) 100%);}
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
+  gap:3rem 2rem;
+  padding:1.4rem .3rem .5rem;
+}
+.pol-wrap{padding-top:14px;}
+.polaroid{background:var(--white);padding:.6rem .6rem 3.2rem;box-shadow:0 2px 8px rgba(0,0,0,.07),0 8px 30px var(--shadow-r);border-radius:3px;cursor:pointer;position:relative;transition:transform .45s cubic-bezier(.25,.46,.45,.94),box-shadow .45s ease;}
+.pol-wrap:nth-child(5n+1) .polaroid{transform:rotate(-2deg);}
+.pol-wrap:nth-child(5n+2) .polaroid{transform:rotate(1.5deg);}
+.pol-wrap:nth-child(5n+3) .polaroid{transform:rotate(-1deg);}
+.pol-wrap:nth-child(5n+4) .polaroid{transform:rotate(2deg);}
+.pol-wrap:nth-child(5n)   .polaroid{transform:rotate(-1.5deg);}
+.polaroid:hover{transform:rotate(0deg) scale(1.06) translateY(-8px) !important;box-shadow:0 24px 55px rgba(138,48,88,.22),0 6px 18px rgba(0,0,0,.1);z-index:20;}
+/* washi tape */
+.polaroid::before{content:'';position:absolute;top:-12px;left:50%;transform:translateX(-50%);width:44px;height:22px;border-radius:4px;background:rgba(244,160,190,.55);}
+.pol-wrap:nth-child(3n+2) .polaroid::before{background:rgba(212,147,106,.45);width:38px;}
+.pol-wrap:nth-child(3n)   .polaroid::before{background:rgba(160,200,230,.45);width:50px;}
+.pol-img{width:100%;aspect-ratio:1/1;overflow:hidden;background:linear-gradient(135deg,var(--rose-pale) 0%,#ffc5d8 100%);position:relative;}
+.pol-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;}
+.polaroid:hover .pol-img img{transform:scale(1.07);}
+.pol-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.35rem;color:rgba(255,255,255,.85);}
+.pol-icon{font-size:2.2rem;}
+.pol-hint{font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;opacity:.8;text-align:center;}
+.pol-caption{padding:.6rem .3rem 0;text-align:center;font-family:'Dancing Script',cursive;font-size:1.1rem;color:var(--txt);}
+
+/* ============================================================
+   LIGHTBOX
+   ============================================================ */
+#lightbox{position:fixed;inset:0;z-index:1000;background:rgba(90,26,56,.88);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s ease;}
+#lightbox.open{opacity:1;pointer-events:all;}
+#lightbox img{max-width:90vw;max-height:85vh;border-radius:4px;box-shadow:0 20px 60px rgba(0,0,0,.4);transform:scale(.85);transition:transform .35s cubic-bezier(.25,.46,.45,.94);}
+#lightbox.open img{transform:scale(1);}
+#lightbox-close{position:absolute;top:1.5rem;right:2rem;background:none;border:none;color:white;font-size:2.5rem;cursor:pointer;opacity:.8;line-height:1;}
+#lightbox-close:hover{opacity:1;}
+
+/* ============================================================
+   QUOTES (versos + filósofos)
+   ============================================================ */
+.quotes-wrap{padding:5.5rem 0;background:var(--white);position:relative;overflow:hidden;}
+.quotes-wrap::after{content:'✝';position:absolute;font-size:20rem;opacity:.025;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;color:var(--rose-dark);}
+.quotes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:2rem;}
+
+/* tarjeta biblica */
+.q-card{border-radius:20px;padding:2rem 1.8rem 1.6rem;position:relative;transition:transform .3s ease,box-shadow .3s ease;box-shadow:0 4px 22px var(--shadow-r);}
+.q-card:hover{transform:translateY(-5px);box-shadow:0 14px 36px rgba(138,48,88,.18);}
+.q-card.bible{background:linear-gradient(135deg,#fff8fb,#fff0f5);border-left:4px solid var(--rose-mid);}
+.q-card.philo{background:linear-gradient(135deg,#fdf6ef,#fff8ee);border-left:4px solid var(--gold);}
+.q-icon{font-size:1.8rem;margin-bottom:.8rem;display:block;}
+.q-tag{display:inline-block;font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;font-family:'Lora',serif;padding:.2rem .7rem;border-radius:20px;margin-bottom:.9rem;}
+.q-card.bible .q-tag{background:rgba(224,120,154,.12);color:var(--rose-deep);}
+.q-card.philo .q-tag{background:rgba(201,132,58,.12);color:var(--gold);}
+.q-text{font-family:'Playfair Display',serif;font-style:italic;font-size:1.05rem;line-height:1.8;color:var(--txt);margin-bottom:.9rem;}
+.q-source{font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--txt-soft);}
+.q-ref{font-size:.75rem;color:var(--rose-mid);display:block;margin-top:.2rem;font-style:normal;}
+
+/* ============================================================
+   FOTO-GRID (15 fotos sin texto)
+   ============================================================ */
+.fotogrid-wrap{padding:5rem 0;background:linear-gradient(150deg,var(--bg) 0%,#fde0ed 50%,var(--bg) 100%);}
+.foto-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:1.2rem;
+  padding:.3rem;
+}
+.foto-frame{
+  aspect-ratio:1/1;overflow:hidden;border-radius:12px;
+  background:linear-gradient(135deg,var(--rose-pale),#ffc5d8);
+  position:relative;cursor:pointer;
+  box-shadow:0 4px 16px var(--shadow-r);
+  transition:transform .35s ease,box-shadow .35s ease;
+}
+.foto-frame:hover{transform:scale(1.04);box-shadow:0 12px 32px rgba(138,48,88,.22);z-index:5;}
+.foto-frame img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease;}
+.foto-frame:hover img{transform:scale(1.08);}
+.foto-frame .fp{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2rem;color:rgba(255,255,255,.7);}
+.foto-frame .fp span{font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;opacity:.75;display:block;margin-top:.3rem;text-align:center;color:rgba(255,255,255,.8);}
+
+/* ============================================================
+   ABUELA SECTION
+   ============================================================ */
+.abuela-wrap{
+  padding:6rem 0;
+  background:linear-gradient(160deg,var(--wine) 0%,#7a2248 40%,var(--rose-dark) 70%,var(--wine) 100%);
+  position:relative;overflow:hidden;
+}
+.abuela-wrap::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23ffffff' fill-opacity='.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.abuela-crown{text-align:center;font-size:3.5rem;margin-bottom:.5rem;animation:floatBob 3s ease-in-out infinite;}
+.abuela-title{font-family:'Dancing Script',cursive;font-size:clamp(2.8rem,7vw,5.5rem);color:var(--rose-pale);text-align:center;text-shadow:0 4px 20px rgba(0,0,0,.3);margin-bottom:.4rem;}
+.abuela-subtitle{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(1rem,2.5vw,1.3rem);color:rgba(255,210,230,.75);text-align:center;margin-bottom:3.5rem;max-width:600px;margin-left:auto;margin-right:auto;}
+
+/* 3 fotos abuela */
+.abuela-photos{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;max-width:1150px;margin:0 auto 4rem;}
+.abuela-pol{padding-top:14px;}
+.abuela-frame{background:rgba(255,255,255,.95);padding:.7rem .7rem 3.8rem;border-radius:3px;box-shadow:0 8px 35px rgba(0,0,0,.25);position:relative;transition:transform .4s ease,box-shadow .4s ease;}
+.abuela-pol:nth-child(1) .abuela-frame{transform:rotate(-2.5deg);}
+.abuela-pol:nth-child(2) .abuela-frame{transform:rotate(0deg);}
+.abuela-pol:nth-child(3) .abuela-frame{transform:rotate(2deg);}
+.abuela-pol:nth-child(4) .abuela-frame{transform:rotate(-1.5deg);}
+.abuela-pol:nth-child(5) .abuela-frame{transform:rotate(1deg);}
+.abuela-frame:hover{transform:rotate(0deg) scale(1.05) translateY(-8px) !important;box-shadow:0 24px 60px rgba(0,0,0,.35);}
+.abuela-frame::before{content:'';position:absolute;top:-12px;left:50%;transform:translateX(-50%);width:48px;height:22px;border-radius:4px;background:rgba(255,215,150,.65);}
+.abuela-img{width:100%;aspect-ratio:1/1;overflow:hidden;background:linear-gradient(135deg,#d4936a55,#c05075aa);position:relative;}
+.abuela-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;}
+.abuela-frame:hover .abuela-img img{transform:scale(1.06);}
+.abuela-img .ap{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:rgba(255,255,255,.85);gap:.35rem;}
+.abuela-img .ap span{font-size:2.5rem;}
+.abuela-img .ap p{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;}
+.abuela-cap{padding:.8rem .3rem 0;text-align:center;font-family:'Dancing Script',cursive;font-size:1.25rem;color:var(--txt);}
+
+/* textos tributo abuela */
+.abuela-tributes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.8rem;max-width:1000px;margin:0 auto;}
+.tribute-card{background:rgba(255,255,255,.08);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:2rem 1.8rem;text-align:center;transition:background .3s ease,transform .3s ease;}
+.tribute-card:hover{background:rgba(255,255,255,.14);transform:translateY(-4px);}
+.tribute-icon{font-size:2.2rem;margin-bottom:.9rem;display:block;}
+.tribute-title{font-family:'Dancing Script',cursive;font-size:1.6rem;color:var(--rose-pale);margin-bottom:.6rem;}
+.tribute-text{font-size:.97rem;color:rgba(255,220,235,.8);line-height:1.75;font-style:italic;}
+
+/* ============================================================
+   QUOTE BAND
+   ============================================================ */
+.quote-band{padding:6rem 2rem;text-align:center;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--wine) 0%,var(--rose-dark) 40%,#c05475 80%,var(--wine) 100%);}
+.quote-band::before{content:'"';position:absolute;top:-3rem;left:1rem;font-family:'Playfair Display',serif;font-size:22rem;line-height:1;color:rgba(255,255,255,.04);pointer-events:none;}
+.quote-band blockquote{position:relative;z-index:1;font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(1.2rem,3vw,2rem);color:rgba(255,240,248,.96);max-width:720px;margin:0 auto 1.4rem;line-height:1.72;}
+.quote-band cite{position:relative;z-index:1;display:block;font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,210,235,.65);}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer{background:linear-gradient(135deg,var(--wine) 0%,#3d1028 100%);color:rgba(255,220,240,.75);text-align:center;padding:4rem 2rem;}
+.footer-title{font-family:'Dancing Script',cursive;font-size:clamp(2.5rem,7vw,4rem);color:var(--rose);margin-bottom:1rem;}
+.footer-flowers{font-size:2rem;letter-spacing:.4rem;margin-bottom:1.5rem;}
+.footer-quote{font-family:'Playfair Display',serif;font-style:italic;font-size:1rem;max-width:480px;margin:0 auto 2rem;opacity:.75;line-height:1.7;}
+.footer-made{font-size:.8rem;opacity:.5;margin-top:.5rem;}
+
+/* ============================================================
+   HEART BURST
+   ============================================================ */
+.h-burst{position:fixed;pointer-events:none;z-index:9999;font-size:1.3rem;animation:hPop .9s ease forwards;}
+@keyframes hPop{0%{transform:translate(0,0) scale(0);opacity:1;}100%{transform:translate(var(--dx),var(--dy)) scale(1.2);opacity:0;}}
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar{width:7px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--rose);border-radius:99px;}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media(max-width:600px){
+  .gallery-grid{grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:2.5rem 1.2rem;}
+  .foto-grid{grid-template-columns:repeat(3,1fr);gap:.8rem;}
+  .abuela-photos{grid-template-columns:1fr;}
+  .quotes-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- PETALS -->
+<div id="petals-canvas"></div>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero">
+  <span class="hero-corner tl">🌸</span>
+  <span class="hero-corner tr">🌷</span>
+  <span class="hero-corner bl">💐</span>
+  <span class="hero-corner br">🌺</span>
+  <div class="hero-ribbon">✨ &nbsp; Día de las Madres · Familia &nbsp; ✨</div>
+  <h1 class="hero-title">Feliz Día,<br>Mamás 💖</h1>
+  <p class="hero-sub">Para cada mamá, tía, prima y abuela que llena de amor<br>el corazón de nuestra familia 🌸</p>
+  <div class="hero-emojis">🌸 💖 🌷 💗 🌺 💕 🌼</div>
+  <button class="scroll-hint" onclick="document.getElementById('galeria').scrollIntoView({behavior:'smooth'})">▾</button>
+</section>
+
+<!-- ============================================================
+     GALLERY — 20 FOTOS
+     ============================================================ -->
+<section class="gallery-wrap" id="galeria">
+  <div class="container">
+    <div class="sec-head reveal">
+      <h2 class="sec-title">Nuestros Momentos</h2>
+      <div class="sec-rule"><span>🌸</span></div>
+    </div>
+    <div class="gallery-grid">
+
+      <div class="pol-wrap reveal d1"><div class="polaroid">
+        <div class="pol-img"><img src="K.jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="pol-placeholder" style="display:flex"><span class="pol-icon"></span><span class="pol-hint"> </span></div></div>
+        <div class="pol-caption">Mi madre.💕</div></div></div>
+
+      <div class="pol-wrap reveal d2"><div class="polaroid">
+        <div class="pol-img"><img src="K (3).jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="pol-placeholder" style="display:flex"><span class="pol-icon"></span><span class="pol-hint"> </span></div></div>
+        <div class="pol-caption">la que mas pelea, digo, amor dá.🌷</div></div></div>
+
+      <div class="pol-wrap reveal d3"><div class="polaroid">
+        <div class="pol-img"><img src="K (4).jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="pol-placeholder" style="display:flex"><span class="pol-icon"></span><span class="pol-hint"> </span></div></div>
+        <div class="pol-caption"> Feliz dia de las madres.💗</div></div></div>
+      <div class="pol-wrap reveal d1"><div class="polaroid">
+        <div class="pol-img"><img src="T (2).jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="pol-placeholder" style="display:flex"><span class="pol-icon"></span><span class="pol-hint"> </span></div></div>
+        <div class="pol-caption">Para las madres que ya salieron de eso 🎀</div></div></div>
+
+      <div class="pol-wrap reveal d2"><div class="polaroid">
+        <div class="pol-img"><img src="T.jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="pol-placeholder" style="display:flex"><span class="pol-icon"></span><span class="pol-hint"> </span></div></div>
+        <div class="pol-caption">O ya casi 🌸</div></div></div>
+
+      <div class="pol-wrap reveal d3"><div class="polaroid">
+        <div class="pol-img"><img src="w (2).jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="pol-placeholder" style="display:flex"><span class="pol-icon"></span><span class="pol-hint"> </span></div></div>
+        <div class="pol-caption">Y para las que ya no son madres 💝</div></div></div>
+
+      <div class="pol-wrap reveal d1"><div class="polaroid">
+        <div class="pol-img"><img src="w.jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="pol-placeholder" style="display:flex"><span class="pol-icon"></span><span class="pol-hint"> </span></div></div>
+        <div class="pol-caption">Sino que son abuelas 🎀</div></div></div>
+
+      <div class="pol-wrap reveal d2"><div class="polaroid">
+        <div class="pol-img"><img src="E.jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="pol-placeholder" style="display:flex"><span class="pol-icon"></span><span class="pol-hint"> </span></div></div>
+        <div class="pol-caption">A las madres amorosas ✨</div></div></div>
+
+      <div class="pol-wrap reveal d3"><div class="polaroid">
+        <div class="pol-img"><img src="E (2).jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="pol-placeholder" style="display:flex"><span class="pol-icon"></span><span class="pol-hint"> </span></div></div>
+        <div class="pol-caption">Que descubren la alegria de ser mamá 🌸</div></div></div>
+
+      <div class="pol-wrap reveal d1"><div class="polaroid">
+        <div class="pol-img"><img src="Y (2).jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="pol-placeholder" style="display:flex"><span class="pol-icon"></span><span class="pol-hint"> </span></div></div>
+        <div class="pol-caption">Y a las que son madres X2 💝</div></div></div>
+
+      <div class="pol-wrap reveal d2"><div class="polaroid">
+        <div class="pol-img"><img src="Y.jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="pol-placeholder" style="display:flex"><span class="pol-icon"></span><span class="pol-hint"> </span></div></div>
+        <div class="pol-caption">Que lo estan re-descubriendo 🌺</div></div></div>
+
+          <div class="pol-wrap reveal d3"><div class="polaroid">
+        <div class="pol-img"><img src="M.jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="pol-placeholder" style="display:flex"><span class="pol-icon"></span><span class="pol-hint"> </span></div></div>
+        <div class="pol-caption">Tambien a esas madres 💖</div></div></div>
+
+      <div class="pol-wrap reveal d1"><div class="polaroid">
+        <div class="pol-img"><img src="M (2).jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="pol-placeholder" style="display:flex"><span class="pol-icon"></span><span class="pol-hint"> </span></div></div>
+        <div class="pol-caption">Que llevamos mucho 🌷</div></div></div>
+
+      <div class="pol-wrap reveal d2"><div class="polaroid">
+        <div class="pol-img"><img src="M (3).jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="pol-placeholder" style="display:flex"><span class="pol-icon"></span><span class="pol-hint"> </span></div></div>
+        <div class="pol-caption">MUCHO 💗</div></div></div>
+
+      <div class="pol-wrap reveal d3"><div class="polaroid">
+        <div class="pol-img"><img src="M (4).jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="pol-placeholder" style="display:flex"><span class="pol-icon"></span><span class="pol-hint"></span></div></div>
+        <div class="pol-caption">Tiempo esperando ✨</div></div></div>
+
+
+
+    </div><!-- /gallery-grid -->
+  </div>
+</section>
+
+<!-- lightbox -->
+<div id="lightbox">
+  <button id="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<!-- ============================================================
+     VERSÍCULOS & FILÓSOFOS
+     ============================================================ -->
+<section class="quotes-wrap">
+  <div class="container">
+    <div class="sec-head reveal">
+      <h2 class="sec-title">Palabras de Sabiduría</h2>
+      <div class="sec-rule"><span>✝️</span></div>
+    </div>
+    <div class="quotes-grid">
+
+      <div class="q-card bible reveal d1">
+        <span class="q-icon">📖</span>
+        <span class="q-tag">Sagradas Escrituras</span>
+        <p class="q-text">"Sus hijos se levantan y la llaman bienaventurada; y su marido también la alaba."</p>
+        <span class="q-source">— Proverbios 31:28</span>
+      </div>
+
+      <div class="q-card bible reveal d2">
+        <span class="q-icon">✝️</span>
+        <span class="q-tag">Sagradas Escrituras</span>
+        <p class="q-text">"Como aquel a quien consuela su madre, así os consolaré yo a vosotros."</p>
+        <span class="q-source">— Isaías 66:13</span>
+      </div>
+
+      <div class="q-card bible reveal d3">
+        <span class="q-icon">🕊️</span>
+        <span class="q-tag">Sagradas Escrituras</span>
+        <p class="q-text">"Honra a tu padre y a tu madre, que es el primer mandamiento con promesa: para que te vaya bien y seas de larga vida sobre la tierra."</p>
+        <span class="q-source">— Efesios 6:2-3</span>
+      </div>
+
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     QUOTE BAND
+     ============================================================ -->
+<section class="quote-band">
+  <blockquote class="reveal">"La madre es el primer maestro de los hijos. La impresión de su mano sobre sus vidas persiste indefinidamente."</blockquote>
+  <cite class="reveal">— Confucio</cite>
+</section>
+
+<!-- ============================================================
+     15 FOTOS SIN TEXTO
+     ============================================================ -->
+<section class="fotogrid-wrap">
+  <div class="container">
+    <div class="sec-head reveal">
+      <h2 class="sec-title">Galería de Recuerdos</h2>
+      <div class="sec-rule"><span>💗</span></div>
+    </div>
+    <div class="foto-grid">
+
+      <!-- Fotos 1–15: pon la URL en cada src="" -->
+      <div class="foto-frame reveal d1"><img src="A (7).jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="fp">🌸</div></div>
+      <div class="foto-frame reveal d2"><img src="k (2).jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="fp">💖</div></div>
+      <div class="foto-frame reveal d3"><img src="PR.jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="fp">🌷</div></div>
+      <div class="foto-frame reveal d1"><img src="td.jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="fp">🌺</div></div>
+      <div class="foto-frame reveal d2"><img src="td (2).jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="fp">💕</div></div>
+      <div class="foto-frame reveal d3"><img src="td (3).jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="fp">🌼</div></div>
+      <div class="foto-frame reveal d1"><img src="td (4).jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="fp">🌸</div></div>
+      <div class="foto-frame reveal d2"><img src="td (5).jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="fp">💗</div></div>
+      <div class="foto-frame reveal d3"><img src="td (6).jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="fp">🌹</div></div>
+      <div class="foto-frame reveal d1"><img src="td (8).jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="fp">💐</div></div>
+      <div class="foto-frame reveal d1"><img src="td (9).jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="fp">💐</div></div>
+      <div class="foto-frame reveal d1"><img src="td (11).jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="fp">💐</div></div>
+      <div class="foto-frame reveal d1"><img src="Mi.jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="fp">💐</div></div>
+      <div class="foto-frame reveal d1"><img src="Mi (2).jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="fp">💐</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECCIÓN ABUELA — LA MATRIARCA
+     ============================================================ -->
+<section class="abuela-wrap" id="abuela">
+  <div class="container">
+    <div class="abuela-crown reveal">👑</div>
+    <h2 class="abuela-title reveal">La Abuela</h2>
+    <p class="abuela-subtitle reveal">Raíz, corazón, alma y fundadora de las peleadoras, digo, madres de nuestra familia</p>
+
+    <!-- 5 fotos abuela -->
+    <div class="abuela-photos">
+      <div class="abuela-pol reveal d1">
+        <div class="abuela-frame">
+          <div class="abuela-img">
+            <img src="A (2).jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="ap" style="display:flex"><span>👑</span></div>
+          </div>
+          <div class="abuela-cap">La Matriarca 👑</div>
+        </div>
+      </div>
+      <div class="abuela-pol reveal d2">
+        <div class="abuela-frame">
+          <div class="abuela-img">
+            <img src="A (3).jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="ap" style="display:flex"><span>💐</span></div>
+          </div>
+          <div class="abuela-cap">Creadora de generaciones 💛</div>
+        </div>
+      </div>
+      <div class="abuela-pol reveal d3">
+        <div class="abuela-frame">
+          <div class="abuela-img">
+            <img src="A (4).jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="ap" style="display:flex"><span>🌹</span></div>
+          </div>
+          <div class="abuela-cap">Usted nos conecta 🌹</div>
+        </div>
+      </div>
+      <div class="abuela-pol reveal d1">
+        <div class="abuela-frame">
+          <div class="abuela-img">
+            <img src="A (5).jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="ap" style="display:flex"><span>💛</span></div>
+          </div>
+          <div class="abuela-cap">Con mucho amor, de parte de toda su familia 💛</div>
+        </div>
+      </div>
+      <div class="abuela-pol reveal d2">
+        <div class="abuela-frame">
+          <div class="abuela-img">
+            <img src="A (6).jpeg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="ap" style="display:flex"><span>🌸</span></div>
+          </div>
+          <div class="abuela-cap">FELIZ DIA DE LAS MADRES 🌸</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Textos tributo -->
+    <div class="abuela-tributes">
+      <div class="tribute-card reveal d1">
+        <span class="tribute-icon">👑</span>
+        <div class="tribute-title">La Patrona</div>
+        <p class="tribute-text">De sus manos nacieron hijos, nietos y bisnietos. Ella es el origen de todo lo que somos y la razón por la que esta familia existe.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="footer-title reveal">Las Amamos a Todas 💖</div>
+  <div class="footer-flowers reveal">🌸 🌷 💐 🌺 🌸</div>
+  <p class="footer-quote reveal">"Una familia unida es la obra maestra del amor de una madre."</p>
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+/* PETALS */
+const PETALS=['🌸','🌷','🌺','🌼','💮','🌹'];
+const pc=document.getElementById('petals-canvas');
+let cnt=0;
+function spawnPetal(){
+  if(cnt>=20)return;
+  const el=document.createElement('span');
+  el.className='petal';
+  el.textContent=PETALS[Math.floor(Math.random()*PETALS.length)];
+  el.style.left=Math.random()*100+'vw';
+  el.style.fontSize=(.6+Math.random()*1.1)+'rem';
+  const d=5+Math.random()*9;
+  el.style.animationDuration=d+'s';
+  el.style.animationDelay=Math.random()*3+'s';
+  pc.appendChild(el); cnt++;
+  setTimeout(()=>{el.remove();cnt--;},( d+3)*1000);
+}
+setInterval(spawnPetal,700);
+
+/* SCROLL REVEAL */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('shown');});
+},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+/* HEARTS ON CLICK */
+const H=['💖','💕','🌸','💗','💝','🌷','✨'];
+document.addEventListener('click',e=>{
+  if(['TEXTAREA','BUTTON','INPUT'].includes(e.target.tagName))return;
+  for(let i=0;i<7;i++){
+    const h=document.createElement('div');
+    h.className='h-burst';
+    h.textContent=H[Math.floor(Math.random()*H.length)];
+    h.style.left=e.clientX+'px'; h.style.top=e.clientY+'px';
+    const a=(i/7)*360+Math.random()*20, dist=50+Math.random()*70;
+    h.style.setProperty('--dx',Math.cos(a*Math.PI/180)*dist+'px');
+    h.style.setProperty('--dy',Math.sin(a*Math.PI/180)*dist-35+'px');
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),950);
+  }
+});
+
+/* LIGHTBOX */
+function openLightbox(src){
+  const lb=document.getElementById('lightbox');
+  document.getElementById('lightbox-img').src=src;
+  lb.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeLightbox(){
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.getElementById('lightbox').addEventListener('click',e=>{
+  if(e.target===e.currentTarget)closeLightbox();
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox();});
+
+/* CLICK foto → lightbox */
+document.querySelectorAll('.pol-wrap,.foto-frame,.abuela-pol').forEach(w=>{
+  w.addEventListener('click',()=>{
+    const img=w.querySelector('img');
+    if(img&&img.src&&img.src!==window.location.href&&!img.src.endsWith('#')){
+      openLightbox(img.src);
+    }
+  });
+});
+</script>
+</body>
+</html>
